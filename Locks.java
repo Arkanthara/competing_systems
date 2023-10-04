@@ -2,51 +2,51 @@ public class Locks {
 	public static void main(String args[]) {
 		var mem = new MyObj();
 		var lock = new Attempt1();
-		var t1 = new MyThread(lock, mem);
-		var t2 = new MyThread(lock, mem);
+		var t1 = new MyThread(lock, mem, 0);
+		var t2 = new MyThread(lock, mem, 1);
 		t1.start();
 		t2.start();
 		try {
-			Thread.sleep(600);
+			Thread.sleep(500);
 		}
 		catch (InterruptedException e){}
-		System.out.println("If x != 2000: Failed... x= " + mem.x);
+		System.out.println("Method 1: If x != 200000: Failed... x= " + mem.x);
 
 		var mem_2 = new MyObj();
 		var lock_2 = new Attempt2();
-		var t3 = new MyThread(lock_2, mem_2);
-		var t4 = new MyThread(lock_2, mem_2);
+		var t3 = new MyThread(lock_2, mem_2, 0);
+		var t4 = new MyThread(lock_2, mem_2, 1);
 		t3.start();
 		t4.start();
 		try {
-			Thread.sleep(600);
+			Thread.sleep(500);
 		}
 		catch (InterruptedException e){}
-		System.out.println("If x != 2000: Failed... x= " + mem_2.x);
+		System.out.println("Method 2: If x != 200000: Failed... x= " + mem_2.x);
 		
 		var mem_3 = new MyObj();
-		var lock_3 = new Peterson();
-		var t5 = new MyThread(lock_3, mem_3);
-		var t6 = new MyThread(lock_3, mem_3);
+		var lock_3 = new Attempt3();
+		var t5 = new MyThread(lock_3, mem_3, 0);
+		var t6 = new MyThread(lock_3, mem_3, 1);
 		t5.start();
 		t6.start();
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(500);
 		}
 		catch (Exception e){System.out.println(e);}
-		System.out.println("If x != 2000: Failed... x= " + mem_3.x);
+		System.out.println("Method 3: If x != 200000: Failed... x= " + mem_3.x);
 		
 		var mem_4 = new MyObj();
 		var lock_4 = new Peterson();
-		var t7 = new MyThread(lock_4, mem_4);
-		var t8 = new MyThread(lock_4, mem_4);
+		var t7 = new MyThread(lock_4, mem_4, 0);
+		var t8 = new MyThread(lock_4, mem_4, 1);
 		t7.start();
 		t8.start();
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(500);
 		}
 		catch (InterruptedException e){}
-		System.out.println("If x != 2000: Failed... x= " + mem_4.x);
+		System.out.println("Method 4: If x != 200000: Failed... x= " + mem_4.x);
 	}
 }
 
@@ -56,7 +56,7 @@ public interface Lock {
 }
 
 class Attempt1 implements Lock {
-	private boolean lock = true;
+	private volatile boolean lock = true;
 
 	public void requestCS(int i) {
 		while (!lock);
@@ -116,17 +116,19 @@ public class MyObj {
 public class MyThread extends Thread {
 	private Lock lock;
 	private MyObj mem;
+	private int num;
 
-	public MyThread(Lock lock, MyObj mem) {
+	public MyThread(Lock lock, MyObj mem, int num) {
 		this.lock = lock;
 		this.mem = mem;
+		this.num = num;
 	}
 
 	public void run() {
-		for (int i = 0; i < 1000; i++) {
-			lock.requestCS(0);
+		for (int i = 0; i < 1000000; i++) {
+			lock.requestCS(this.num);
 			this.mem.x += 1;
-			lock.releaseCS(0);
+			lock.releaseCS(this.num);
 		}
 		System.out.println("Finished...");
 	}
