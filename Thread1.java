@@ -1,8 +1,8 @@
 public class Thread1 {
 	public static void main(String args[]) {
-		Ecrit e1 = new Ecrit("bonjour", 10, null);
-		Ecrit e2 = new Ecrit("salut", 12, e1);
-		Ecrit e3 = new Ecrit("\n", 6, e2);
+		Ecrit e1 = new Ecrit("bonjour", 50, null);
+		Ecrit e2 = new Ecrit("salut", 50, e1);
+		Ecrit e3 = new Ecrit("coucou", 50, e2);
 
 /* Version 1 
 		try {
@@ -16,9 +16,13 @@ public class Thread1 {
 		catch (InterruptedException e) {}
 	}
 */
-		e1.start();
-		e2.start();
-		e3.start();
+		try {
+			e3.start();
+			Thread.sleep(300);
+			e2.start();
+			Thread.sleep(300);
+			e1.start();
+		} catch(Exception e) {}
 	}
 }
 
@@ -37,6 +41,7 @@ class Ecrit extends Thread
 	public void run() {
 		try {
 			if (this.e != null) {
+				while (!this.e.isAlive());
 				this.e.join();
 			}
 			for (int i = 0; i < this.nb; i++) {
