@@ -1,4 +1,14 @@
-import java.util.concurrent.*;
+class Main {
+  public static void main(String[] args) {
+    System.out.println("Coucou !");
+  }
+}
+
+interface Lock {
+  public void requestCS(int i);
+
+  public void releaseCS(int i);
+}
 
 class Bakery implements Lock {
   int N;
@@ -32,11 +42,5 @@ class Bakery implements Lock {
 
   public void releaseCS(int i) { // protocole de sortie de SC
     number[i] = 0;
-  }
-}
-
-class Main {
-  public static void main() {
-    System.out.println("Coucou !");
   }
 }
