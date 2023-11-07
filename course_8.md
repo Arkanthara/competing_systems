@@ -14,3 +14,6 @@ Le notify ne va pas forcément réveiller le thread qui attend que la pile ne so
 Attention aux synchronised dans les synchronised... Cela marche car on ne bloque pas les ressources dans le deuxième verrou...
 
 Problème lecteur rédacteur
+équitable est plus fort que starvation... Équitable: chacun a une chance identique d'être exécuté
+
+Run: exécute méthode run, mais ne crée pas de thread... VS start: crée un thread et exécute la méthode run.
