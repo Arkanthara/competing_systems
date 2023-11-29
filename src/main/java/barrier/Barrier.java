@@ -1,5 +1,6 @@
 package barrier;
 import java.util.concurrent.*;
+import java.util.Random;
 
 
 public class Barrier {
@@ -19,19 +20,23 @@ public class Barrier {
 			mutex.acquire();
 			current ++;
 			if (current == 1) {
-				System.out.println("First thread goes through the barrier !");
+				System.out.print("0");
 			}
-			mutex.release();
+			if (current == count - 1) {
+				Thread.yield();
+			}
+			// Don't work !
+			// mutex.release();
 			if (current < count) {
+				mutex.release();
 				wait.acquire();
 			}
 			else if (current == count) {
-				mutex.acquire();
 				current = 0;
 				for (int i = 0; i < count; i++) {
 					wait.release();
 				}
-				System.out.println("Last thread goes through the barrier !");
+				System.out.print("1");
 				mutex.release();
 			}
 		} catch (InterruptedException exc) {}
