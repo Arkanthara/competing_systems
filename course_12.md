@@ -1,0 +1,29 @@
+
+
+Les algorithmes sont wait-free -> pas de synchronise, wait etc...
+
+Solution pour registre multi-valeur: Dès qu'on trouve un True dans le tableau, on balaye le tableau dans l'autre sens afin de voir si quelqu'un l'a modifié...
+
+ri -> rj => i <= j (i et j représentent ici le temps
+
+Attention, on ne sait pas ce qui se passe lorsqu'on a 2 lectures simultanées...
+
+MRSW -> introduction de 2 champs: value pour la valeur et timestamp une estampille tamporelle. Valeur binaire + timestamp binaire => indice du tableau
+
+fonction: définit le domaine de définition et le domaine d'arrivée...
+
+
+# Consensus
+
+- À chaque thread, on assigne une valeur
+- Les threads se mettent d'accord sur une valeur commune...
+
+État d'un système: état de chaque thread x variables partagées / mémoire partagée
+
+Pour 2 processus il n'y a pas de solution wait-free au problème du consensus.
+
+État bivalent: on ne sait pas quel nombre choisir entre le nombre de T0 et de T1...
+Un état bivalent est critique si à un moment donné la prochaine action fait qu'on est plus dans un état bivalent...
+Il y a toujours un état critique car l'exécution est finie...
+
+Dans un état critique, T0 peut R/W localement ou R/W partagée...
