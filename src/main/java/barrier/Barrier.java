@@ -26,9 +26,9 @@ public class Barrier {
 				Thread.yield();
 			}
 			// Don't work !
-			// mutex.release();
+			mutex.release();
 			if (current < count) {
-				mutex.release();
+				// mutex.release();
 				wait.acquire();
 			}
 			else if (current == count) {
